@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: bruh_no_look
-    env: node
-    plan: free
-    branch: main
-    buildCommand: npm install
-    startCommand: node server.js
