@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login / Signup</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #222;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background: #333;
+        padding: 30px;
+        border-radius: 12px;
+        text-align: center;
+        width: 320px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #ff5722;
+    }
+
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+
+    button {
+        background: #444;
+        color: white;
+        padding: 12px 25px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #ff5722;
+        transform: scale(1.05);
+    }
+
+    .message {
+        color: #ff5555;
+        margin-top: 10px;
+        min-height: 20px;
+    }
+
+    .success {
+        color: #55ff55;
+    }
+
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+    <p class="message" id="loginMsg"></p>
+
+    <h2>Sign Up</h2>
+    <input type="text" id="signupUser" placeholder="Username"><br>
+    <input type="password" id="signupPass" placeholder="Password"><br>
+    <button onclick="signup()">Sign Up</button>
+    <p class="message" id="signupMsg"></p>
+</div>
+
+<script>
+function login(){
+    const username=document.getElementById('username').value;
+    const password=document.getElementById('password').value;
+
+    fetch('/login',{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({username,password})
+    }).then(res=>res.json()).then(data=>{
+        if(data.success){
+            window.location.href='game.html';
+        } else {
+            document.getElementById('loginMsg').textContent='Try again!';
+        }
+    });
+}
+
+function signup(){
+    const username=document.getElementById('signupUser').value;
+    const password=document.getElementById('signupPass').value;
+
+    fetch('/signup',{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({username,password})
+    }).then(res=>res.json()).then(data=>{
+        if(data.success){
+            document.getElementById('signupMsg').textContent='Account created!';
+            document.getElementById('signupMsg').classList.add('success');
+        } else {
+            document.getElementById('signupMsg').textContent=data.message;
+            document.getElementById('signupMsg').classList.remove('success');
+        }
+    });
+}
+</script>
+</body>
+</html>
